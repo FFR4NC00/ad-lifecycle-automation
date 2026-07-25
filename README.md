@@ -18,3 +18,11 @@ A real IT department would recognize all three as junior-sysadmin bread and butt
 - Every state-changing action supports `-WhatIf` via PowerShell's native `SupportsShouldProcess`, uses `try/catch` with `-ErrorAction Stop`, and is logged with a timestamp and severity.
 - Failure handling is proportionate: a missing manager warns and continues; a failed account creation aborts; a failed email never sinks the health report that's already on disk.
 - Exit codes are meaningful (0/1) so Task Scheduler and monitoring tools can consume the results.
+
+## Resume bullet points
+
+- Automated Active Directory user onboarding/offboarding with PowerShell, reducing a ~15-step manual ADUC process to a single audited command with dry-run (`-WhatIf`) support and full action logging
+- Implemented security-first offboarding workflow: immediate account disable, audited removal of group memberships, GAL hiding, and quarantine-OU retention in place of deletion to preserve audit trails
+- Built a scheduled server health-monitoring script (disk, services, event logs, CPU/RAM) with console/text/HTML reporting and email alerting, deployed via Task Scheduler under least-privilege run-as accounts
+- Designed config-driven department mapping (OU + group assignment) enabling non-developers to extend the system without code changes
+- Applied production scripting practices throughout: parameter validation, structured error handling with try/catch, idempotency checks, meaningful exit codes, and timestamped audit logs
