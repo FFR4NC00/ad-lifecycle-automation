@@ -1,0 +1,52 @@
+<svg width="680" height="355" viewBox="0 0 680 355" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Home lab network diagram</title>
+<desc>A router connects over Ethernet to a PC named HIRAM running Hyper-V. Inside the PC, two virtual machines make up the corp.local Active Directory domain: a domain controller called DC01 with a static IP of 192.168.1.10 running AD DS and DNS, and a domain-joined client called Client01 running Windows 11 Enterprise with a DHCP assigned IP. DC01 provides DNS and domain authentication to Client01.</desc>
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#5F5E5A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+
+<rect width="680" height="355" fill="#FFFFFF"/>
+
+<!-- Router (external) -->
+<rect x="15" y="125" width="130" height="75" rx="8" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+<text x="80" y="155" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="500" fill="#2C2C2A">Router</text>
+<text x="80" y="173" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#444441">Home gateway</text>
+<text x="80" y="189" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#444441">192.168.1.254</text>
+
+<!-- Router to PC connector -->
+<line x1="145" y1="163" x2="169" y2="163" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- Outer container: the PC / Hyper-V host -->
+<rect x="170" y="70" width="460" height="230" rx="20" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+<text x="190" y="100" text-anchor="start" font-family="Arial, sans-serif" font-size="14" font-weight="500" fill="#2C2C2A">PC (HIRAM)</text>
+<text x="190" y="118" text-anchor="start" font-family="Arial, sans-serif" font-size="12" fill="#444441">Hyper-V host, wired Ethernet</text>
+<text x="400" y="134" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#444441">Active Directory domain corp.local</text>
+
+<!-- DC01 VM -->
+<rect x="195" y="145" width="190" height="125" rx="12" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text x="290" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="500" fill="#085041">DC01</text>
+<text x="290" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#0F6E56">Domain controller</text>
+<text x="290" y="216" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#0F6E56">192.168.1.10</text>
+<text x="290" y="232" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#0F6E56">AD DS + DNS roles</text>
+
+<!-- Client01 VM -->
+<rect x="420" y="145" width="190" height="125" rx="12" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+<text x="515" y="180" text-anchor="middle" font-family="Arial, sans-serif" font-size="14" font-weight="500" fill="#712B13">Client01</text>
+<text x="515" y="200" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#993C1D">Domain-joined client</text>
+<text x="515" y="216" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#993C1D">Windows 11 Enterprise</text>
+<text x="515" y="232" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#993C1D">DHCP assigned IP</text>
+
+<!-- DC01 to Client01 connector -->
+<text x="402" y="203" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#444441">DNS</text>
+<line x1="418" y1="210" x2="387" y2="210" stroke="#5F5E5A" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+<!-- Legend -->
+<rect x="150" y="318" width="10" height="10" rx="2" fill="#F1EFE8" stroke="#5F5E5A" stroke-width="0.5"/>
+<text x="166" y="327" text-anchor="start" font-family="Arial, sans-serif" font-size="12" fill="#444441">Network / host</text>
+<rect x="300" y="318" width="10" height="10" rx="2" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+<text x="316" y="327" text-anchor="start" font-family="Arial, sans-serif" font-size="12" fill="#444441">Domain controller</text>
+<rect x="470" y="318" width="10" height="10" rx="2" fill="#FAECE7" stroke="#993C1D" stroke-width="0.5"/>
+<text x="486" y="327" text-anchor="start" font-family="Arial, sans-serif" font-size="12" fill="#444441">Domain client</text>
+</svg>
