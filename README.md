@@ -19,6 +19,8 @@ A real IT department would recognize all three as junior-sysadmin bread and butt
 - Failure handling is proportionate: a missing manager warns and continues; a failed account creation aborts; a failed email never sinks the health report that's already on disk.
 - Exit codes are meaningful (0/1) so Task Scheduler and monitoring tools can consume the results.
 
+## See TROUBLESHOOTING.md for real problems hit during the build and how they got fixed
+
 ## Resume bullet points
 
 - Automated Active Directory user onboarding/offboarding with PowerShell, reducing a ~15-step manual ADUC process to a single audited command with dry-run (`-WhatIf`) support and full action logging
