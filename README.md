@@ -1,5 +1,9 @@
 # Project: Active Directory Lifecycle Automation & Server Health Monitoring
 
+![Network diagram](network-diagram.svg)
+
+See [LAB-SETUP.md](LAB-SETUP.md) for how the environment was built, and [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for real problems hit along the way and how they were fixed.
+
 ## The business problem
 
 Manual user provisioning is slow, inconsistent, and risky. When onboarding is done by hand in ADUC, every tech does it slightly differently: accounts land in the wrong OU, group memberships get forgotten (the new salesperson can't open the shared drive on day one), attributes like manager and title are skipped, and there's no record of what was done. Offboarding by hand is worse, a forgotten step means a departed employee retains live credentials and access, which is a genuine security incident waiting to happen. Meanwhile, servers fail quietly: disks fill up and services die at 2 AM, and nobody knows until users start calling.
@@ -18,8 +22,6 @@ A real IT department would recognize all three as junior-sysadmin bread and butt
 - Every state-changing action supports `-WhatIf` via PowerShell's native `SupportsShouldProcess`, uses `try/catch` with `-ErrorAction Stop`, and is logged with a timestamp and severity.
 - Failure handling is proportionate: a missing manager warns and continues; a failed account creation aborts; a failed email never sinks the health report that's already on disk.
 - Exit codes are meaningful (0/1) so Task Scheduler and monitoring tools can consume the results.
-
-## See TROUBLESHOOTING.md for real problems hit during the build and how they got fixed
 
 ## Resume bullet points
 
