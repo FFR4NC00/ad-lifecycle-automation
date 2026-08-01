@@ -176,6 +176,92 @@ Where I got lucky. This turned out to be a known PowerShell 5.1 quirk with a cle
 
 ---
 
+## Issue 5 Enhanced Session kept disconnecting the moment DC01 booted into DSRM
+
+**Date**
+2026-07-31
+
+**Status**
+Resolved
+
+**Summary**
+I rebooted DC01 into Directory Services Restore Mode for a disaster recovery drill and my Hyper V connection window immediately said the session was disconnected. Clicking reconnect just triggered the same message over and over.
+
+**Impact**
+Blocked me from logging into DSRM at all for a few minutes while I figured out what was going on.
+
+**Root Cause**
+Hyper V's Enhanced Session Mode is basically RDP running inside the guest. It depends on a service inside Windows that Safe Mode, including DSRM, does not load. So there is nothing on the other end for Enhanced Session to talk to while the machine is in Safe Mode.
+
+**Trigger**
+Booting a VM into any kind of Safe Mode while Enhanced Session Mode is turned on for that connection.
+
+**Detection**
+The behavior gave it away once I thought about it. A totally clean disconnect right at the moment of a Safe Mode boot, not a slow timeout or a login failure, pointed at the connection method itself rather than anything wrong with DC01.
+
+**Resolution**
+Turned off Enhanced Session Mode entirely at the host level under Hyper V Settings, Enhanced Session Mode Policy. That forces Basic Session, which just streams video and does not depend on any service inside the guest, so it worked fine through the whole DSRM login and recovery.
+
+**Action Items**
+
+| What | Type | Status |
+|---|---|---|
+| Remember Enhanced Session Mode cannot be used at all during any Safe Mode boot, plan on Basic Session ahead of time for any drill involving DSRM | note to self | Done |
+| Turn Enhanced Session Mode back on afterward once back in normal mode, since Basic Session has no clipboard support | prevent annoyance | Done |
+
+**Lessons Learned**
+
+What went well. The failure was consistent and immediate, so it did not take long to rule out something being wrong with DC01 itself.
+
+What went wrong. I did not know Enhanced Session Mode had this limitation going in, so I burned a few minutes clicking reconnect before switching approaches.
+
+Where I got lucky. The fix was a single settings toggle once I understood the actual cause.
+
+---
+
+## Issue 6 A backup that looked frozen for 30 minutes was actually just paused
+
+**Date**
+2026-07-31
+
+**Status**
+Resolved
+
+**Summary**
+I kicked off my System State backup script after the disaster recovery drill and the terminal seemed to just sit there for 15 minutes with no new output. I almost pressed escape to kill it.
+
+**Impact**
+Nearly interrupted a real backup job in progress, which would have left a half written backup on the target disk.
+
+**Root Cause**
+Windows Console has a feature called Quick Edit Mode that lets you select text with the mouse for copying. The problem is that selecting text this way pauses the entire console, including whatever process is writing to it, until you deselect. I must have clicked or dragged inside the window at some point without meaning to select anything.
+
+**Trigger**
+Clicking or dragging inside a console window that has Quick Edit Mode enabled, which is the Windows default, while a long running command is writing output to it.
+
+**Detection**
+I compared the script's own internal timestamps in the log. There was a 36 minute gap between one log line and the next, even though the two steps around that gap should have taken about a second. That gap was way bigger than the actual backup work happening around it, which told me the process itself must have been paused rather than genuinely slow.
+
+**Resolution**
+Clicked once inside the terminal window and pressed enter to release the selection. The backup picked right back up and finished normally a few minutes later with a clean success message.
+
+**Action Items**
+
+| What | Type | Status |
+|---|---|---|
+| Avoid clicking or dragging inside a console window while a long script is running, especially backup jobs | prevent | Done |
+| Before assuming a script is frozen, check its own internal log timestamps for a specific gap instead of just going by wall clock time waited | note to self | Done |
+
+**Lessons Learned**
+
+What went well. I checked the log timestamps instead of just guessing, which told me the real story instead of me nearly cancelling a working backup.
+
+What went wrong. I almost pressed escape on a live backup job because 15 minutes of silence looked like a hang from the outside.
+
+Where I got lucky. wbadmin does not seem to mind being paused mid write through Quick Edit Mode. The backup still completed cleanly once I released it. I would not want to rely on that being true for every tool.
+
+---
+
 ## Why I bothered writing these up
 
 The point of doing this postmortem style isn't to prove something broke, it's to make the next version of this problem less likely and leave myself notes I can actually use later instead of having to re debug the same thing from scratch. Every issue above ended with something concrete I changed, either in how I build VMs, how I write scripts, or how I troubleshoot in general.
