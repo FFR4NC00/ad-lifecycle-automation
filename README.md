@@ -16,7 +16,7 @@ Manual user provisioning is slow, inconsistent, and risky. When onboarding is do
 
 A real IT department would recognize all three as junior-sysadmin bread and butter: they reduce ticket handling time, eliminate a class of human error, create the audit trail that security reviews ask for, and shift the team from reactive firefighting toward proactive maintenance.
 
-## Deliberate design decisions (the part interviewers care about)
+## Deliberate design decisions
 
 - Configuration is separated from logic (a single hashtable drives OU placement and group assignment), so supporting a new department is a config edit, not a code change.
 - Every state-changing action supports `-WhatIf` via PowerShell's native `SupportsShouldProcess`, uses `try/catch` with `-ErrorAction Stop`, and is logged with a timestamp and severity.
